@@ -70,7 +70,7 @@ class App extends Component {
     <>
     <Searchbar onSubmit={this.handleSubmitForm}/>
     {isImagesFull && <ImageGallery images={images} onClick={this.toggleModalWindow}/>}
-    {isImagesFull && <Button handleClickBtn={this.fetchImages}/>}
+    {isImagesFull && !loader && <Button handleClickBtn={this.fetchImages}/>}
     {loader && <Spiner/>}
     {largeImageUrl && <Modal largeImageUrl={largeImageUrl} onClick={this.closeModalWindow}/>}
     </>
