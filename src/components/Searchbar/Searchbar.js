@@ -11,7 +11,9 @@ class Searchbar extends Component {
 
   hadleSubmit = (e) => {
     e.preventDefault();
-    this.props.onSubmit(this.state.inputValue);
+    const{onSubmit} = this.props;
+    const{inputValue} = this.state
+    onSubmit(inputValue);
   }
 
   render () {

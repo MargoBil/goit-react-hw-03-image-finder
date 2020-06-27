@@ -7,6 +7,7 @@ import Spiner from './Loader/Loader';
 import Modal from './Modal/Modal';
 
 import fetchImagesWithRequest from './../services/imagesApi';
+// import getImgByRquest from './../services/getImgByRequest';
 
 class App extends Component {
   state = {
@@ -20,13 +21,15 @@ class App extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if(prevState.searchRequest !== this.state.searchRequest) {
+      this.fetchImages = this.fetchImages.bind(this);
       this.fetchImages();
     }
   }
 
   fetchImages = () => {
+    const heightSpiner = 120;
     const{searchRequest, page} = this.state;
-    const scroll = document.documentElement.offsetHeight - 120;
+    const scroll = document.documentElement.offsetHeight - heightSpiner;
     this.setState({loader: true});
     fetchImagesWithRequest(searchRequest, page)
     .then(images => {
@@ -39,7 +42,7 @@ class App extends Component {
         behavior: 'smooth',
       });
     })
-    .catch(error => this.setState({ error }))
+    .catch(error => this.setState({error}))
     .finally(()=>this.setState({loader:false}))
   }
 
@@ -68,11 +71,11 @@ class App extends Component {
     const isImagesFull = images.length > 0;
     return (
     <>
-    <Searchbar onSubmit={this.handleSubmitForm}/>
-    {isImagesFull && <ImageGallery images={images} onClick={this.toggleModalWindow}/>}
-    {isImagesFull && !loader && <Button handleClickBtn={this.fetchImages}/>}
-    {loader && <Spiner/>}
-    {largeImageUrl && <Modal largeImageUrl={largeImageUrl} onClick={this.closeModalWindow}/>}
+      <Searchbar onSubmit={this.handleSubmitForm}/>
+      {isImagesFull && <ImageGallery images={images} onClick={this.toggleModalWindow}/>}
+      {isImagesFull && !loader && <Button handleClickBtn={this.fetchImages}/>}
+      {loader && <Spiner/>}
+      {largeImageUrl && <Modal largeImageUrl={largeImageUrl} onClick={this.closeModalWindow}/>}
     </>
     )}
 }
