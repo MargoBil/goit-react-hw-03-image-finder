@@ -6,8 +6,7 @@ import Button from './Button/Button';
 import Spiner from './Loader/Loader';
 import Modal from './Modal/Modal';
 
-import fetchImagesWithRequest from './../services/imagesApi';
-// import getImgByRquest from './../services/getImgByRequest';
+import getImgByRquest from './../services/getImgByRequest';
 
 class App extends Component {
   state = {
@@ -21,29 +20,13 @@ class App extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if(prevState.searchRequest !== this.state.searchRequest) {
-      this.fetchImages = this.fetchImages.bind(this);
       this.fetchImages();
     }
   }
 
   fetchImages = () => {
-    const heightSpiner = 120;
     const{searchRequest, page} = this.state;
-    const scroll = document.documentElement.offsetHeight - heightSpiner;
-    this.setState({loader: true});
-    fetchImagesWithRequest(searchRequest, page)
-    .then(images => {
-      this.setState(prevState => ({
-        images: [...prevState.images, ...images],
-        page: prevState.page + 1,
-      }));
-      window.scrollTo({
-        top: scroll,
-        behavior: 'smooth',
-      });
-    })
-    .catch(error => this.setState({error}))
-    .finally(()=>this.setState({loader:false}))
+    getImgByRquest(this, searchRequest, page);
   }
 
   handleSubmitForm = (request) => {
